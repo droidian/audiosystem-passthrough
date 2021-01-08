@@ -1,3 +1,9 @@
+audiosystem-passthrough (1.0.0+hybrismobian.bullseye.production) unstable; urgency=low
+
+  * Import to Hybris-Mobian
+
+ -- Erik Inkinen <erik.inkinen@gmail.com>  Tue, 5 Jan 2021 11:33:00 +0200
+
 audiosystem-passthrough (1.0.0+0ubports1) unstable; urgency=low
 
   * Import to UBPorts

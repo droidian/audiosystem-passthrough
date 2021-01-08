@@ -1,8 +1,9 @@
 Source: audiosystem-passthrough
 Section: libs
 Priority: optional
-Maintainer: Danct12 <danct12@disroot.org>
-Build-Depends: debhelper (>= 7),
+Maintainer: hybris-mobian developers <info@hybris-mobian.org>
+XSBC-Original-Maintainer: Danct12 <danct12@disroot.org>
+Build-Depends: debhelper (>= 13),
                libgbinder-dev (>= 1.0.32),
                libglibutil-dev,
                libglib2.0-dev
