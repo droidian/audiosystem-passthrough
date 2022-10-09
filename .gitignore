@@ -1,3 +1,6 @@
 RPMS
 build
 documentation.list
+
+# Added by Droidian
+!.circleci/
