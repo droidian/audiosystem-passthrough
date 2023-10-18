@@ -1,17 +1,89 @@
-audiosystem-passthrough (1.0.0+hybrismobian.bullseye.production) unstable; urgency=low
+audiosystem-passthrough (1.2.1-1+git20230625153206.37dc116.release) trixie; urgency=medium
 
-  * Import to Hybris-Mobian
+  * [skip ci] Replace Drone with CircleCI
+  * [skip ci] [ci] Use the checkout step provided by the droidian-buildd orb
+  * [skip ci] Move to Droidian rolling
 
- -- Erik Inkinen <erik.inkinen@gmail.com>  Tue, 5 Jan 2021 11:33:00 +0200
+ -- Eugenio Paolantonio (g7) <me@medesimo.eu>  Sun, 25 Jun 2023 21:32:06 +0200
 
-audiosystem-passthrough (1.0.0+0ubports1) unstable; urgency=low
+audiosystem-passthrough (1.2.1-1) bookworm; urgency=medium
 
-  * Import to UBPorts
+  * Merge tag 'upstream/1.2.1' into feature/bookworm/upgrade-1.2.1
 
- -- TheKit <thekit@disroot.org>  Thu, 23 Apr 2020 21:04:45 +0100
+ -- Eugenio Paolantonio (g7) <me@medesimo.eu>  Sun, 30 Jan 2022 20:29:20 +0100
 
-audiosystem-passthrough (1.0.0) unstable; urgency=low
+audiosystem-passthrough (1.1.2-1+upgrade12) bookworm; urgency=medium
 
-  * Huong Tram is my favorite singer
+  [ Eugenio Paolantonio (g7) ]
+  * [ci] Updated to match new name [CI SKIP]
+  * [audiosystem-passthrough] Move to bookworm
 
- -- Danct12 <danct12@disroot.org>  Tue, 03 Apr 2020 03:55:55 +0700
+  [ Juho Hämäläinen ]
+  * qti: Refactor alternative interface implementation.
+  * Merge branch 'ubports-add-vendor.qti.qcril.am'
+  * Merge branch 'bmigunov-omp-jb56322'
+  * Bump version.
+  * packaging: Fix service file location.
+  * Merge branch 'bmigunov-omp-jb56322'
+  * Bump version.
+
+  [ Bogdan Migunov ]
+  * hw2_0: Move dummy-hw2_0 to system session.
+  * hw2_0: Omit 'Conflicts=bluebinder.service' declaration.
+
+  [ Florian Leeber ]
+  * qti: Add support for alternative interface name.
+
+  [ Matti Lehtimäki ]
+  * [packaging] BuildRequire systemd via pkgconfig. JB#55010
+  * Merge pull request #7 from mer-hybris/jb55010
+
+ -- Eugenio Paolantonio (g7) <me@medesimo.eu>  Wed, 08 Dec 2021 00:10:01 +0100
+
+audiosystem-passthrough (1.1.2-1) bullseye; urgency=medium
+
+  [ Eugenio Paolantonio (g7) ]
+  * [packaging] Added Drone CI rules
+  * Merge tag 'upstream/1.1.2' into eugenio/test
+  * [packaging] Rework Debian install files
+  * [packaging] Ensure this package is non-native
+
+  [ Erik Inkinen ]
+  * [packaging] Added systemd user service
+
+  [ Matti Lehtimäki ]
+  * audiosystem-passthrough: Move dummy-af service to system session.
+  * Merge pull request #5 from mer-hybris/system_dummyaf
+
+  [ NeKit ]
+  * Add Jenkinsfile for UBPorts CI
+  * debian: import to UBPorts
+  * Properly install to /usr/lib instead of /usr/libexec
+
+  [ Matti Kosola ]
+  * Merge pull request #4 from mer-hybris/aarch64
+
+  [ Simonas Leleiva ]
+  * packaging: Fix pkgconfig file location
+
+  [ Juho Hämäläinen ]
+  * initial commit.
+  * passthrough: Initial separated implementation.
+  * packaging: Add dummy services for AudioFlinger.
+  * README: Add short usage info.
+  * README: Update usage and notes.
+  * Merge pull request #1 from jusa/readme
+  * Merge pull request #2 from AndreevDmitry/master
+  * Bump version.
+  * packaging: Fix systemd service file locations.
+
+  [ Dmitry Andreev ]
+  * [hw2_0] Add hw2_0 implementation. Contributes JB#49015.
+  * Add gitignore.
+  * Update readme for add hw2_0 implementation.
+
+  [ Danct12 ]
+  * initial packaging for debian
+
+ -- Eugenio Paolantonio (g7) <me@medesimo.eu>  Sun, 17 Jan 2021 00:43:50 +0100
+
