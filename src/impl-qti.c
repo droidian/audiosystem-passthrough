@@ -48,6 +48,9 @@
 #define QCRIL_AUDIO_1_0                     QCRIL_IFACE_1_0("IQcRilAudio")
 #define QCRIL_AUDIO_CALLBACK_1_0            QCRIL_IFACE_1_0("IQcRilAudioCallback")
 
+#define OFONO_BINDER_CONF                   "/etc/ofono/binder.conf"
+#define OFONO_BINDER_CONF_D                 "/etc/ofono/binder.d"
+#define OFONO_COMMON_SETTINGS_GROUP         "Settings"
 #define OFONO_RIL_SUBSCRIPTION_CONF         "/etc/ofono/ril_subscription.conf"
 #define OFONO_RIL_SUBSCRIPTION_D            "/etc/ofono/ril_subscription.d"
 #define OFONO_RIL_SLOTS_MAX                 (4)
@@ -74,6 +77,8 @@ enum qcril_audio_callback_methods {
 };
 
 typedef struct hidl_app HidlApp;
+
+typedef void (*ofono_configuration_parser)(HidlApp *, const gchar *);
 
 typedef struct am_client {
     HidlApp *app;
@@ -405,23 +410,70 @@ parse_slots_from_file(
     g_key_file_unref(config);
 }
 
-static gboolean
-app_parse_all_slots(
-        HidlApp *app)
+static void
+parse_slots_from_binder_configuration_file(
+        HidlApp *app,
+        const gchar *filename)
+{
+    GKeyFile *config;
+
+    config = g_key_file_new();
+    if (g_key_file_load_from_file(config,
+                                  filename,
+                                  G_KEY_FILE_NONE,
+                                  NULL)) {
+        gchar** groups = g_key_file_get_groups(config, NULL);
+        gchar** name;
+        for (name = groups; *name; name++) {
+            /* Every group beyond 'Settings' is a binder slot name */
+            if (g_strcmp0(*name, OFONO_COMMON_SETTINGS_GROUP) != 0) {
+                am_client_remove_slot(app, *name);
+                app->clients = g_slist_append(app->clients,
+                                              am_client_new(app, *name));
+            }
+        }
+
+        g_strfreev(groups);
+    }
+
+    g_key_file_unref(config);
+}
+
+static void
+parse_ofono_configuration(
+        HidlApp *app,
+        const gchar *configuration_file,
+        const gchar *configuration_directory,
+        ofono_configuration_parser parser)
 {
     GDir *config_dir;
 
-    parse_slots_from_file(app, OFONO_RIL_SUBSCRIPTION_CONF);
-    if ((config_dir = g_dir_open(OFONO_RIL_SUBSCRIPTION_D, 0, NULL))) {
+    (*parser)(app, configuration_file);
+    if ((config_dir = g_dir_open(configuration_directory, 0, NULL))) {
         const gchar *filename;
         while ((filename = g_dir_read_name(config_dir))) {
             if (g_str_has_suffix(filename, ".conf")) {
-                gchar *path = g_strdup_printf(OFONO_RIL_SUBSCRIPTION_D "/%s", filename);
-                parse_slots_from_file(app, path);
+                gchar *path = g_strdup_printf("%s/%s", configuration_directory, filename);
+                (*parser)(app, path);
                 g_free(path);
             }
         }
         g_dir_close(config_dir);
+    }
+}
+
+static gboolean
+app_parse_all_slots(
+        HidlApp *app)
+{
+    if (g_file_test(OFONO_BINDER_CONF, G_FILE_TEST_EXISTS)) {
+        /* ofono-binder-plugin */
+        parse_ofono_configuration(app, OFONO_BINDER_CONF, OFONO_BINDER_CONF_D,
+            &parse_slots_from_binder_configuration_file);
+    } else {
+        /* ofono-ril-binder-plugin */
+        parse_ofono_configuration(app, OFONO_RIL_SUBSCRIPTION_CONF, OFONO_RIL_SUBSCRIPTION_D,
+            &parse_slots_from_file);
     }
 
     return app->clients ? TRUE : FALSE;
